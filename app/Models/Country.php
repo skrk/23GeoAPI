@@ -13,6 +13,8 @@ class Country extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = ['country_code', 'phone_code'];
+
     // Relation With City
     public function city(){
         return $this->hasMany(City::class, 'country_code');

@@ -9,6 +9,8 @@ class City extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     // Relation With Country
     public function country(){
         return $this->belongsTo(Country::class, 'country_code');
