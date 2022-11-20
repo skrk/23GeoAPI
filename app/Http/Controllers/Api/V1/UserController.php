@@ -12,7 +12,7 @@ class UserController extends Controller
 {
 
     /**
-     * Create ne user and generate token
+     * Create new user and generate token
      *
      * @return array
      */
