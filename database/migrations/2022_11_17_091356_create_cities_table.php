@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('country_code');
-            $table->foreign('country_code', 'cities')->references('country_code')->on('countries');
+            $table->foreign('country_code', 'cities')->references('country_code')->on('countries')->constrained()->onDelete('cascade');;
             $table->timestamps();
         });
     }
