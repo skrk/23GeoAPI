@@ -9,12 +9,6 @@ use App\Http\Requests\V1\UpdateCountryRequest;
 use App\Http\Resources\V1\CountryResource;
 use App\Http\Resources\V1\CountryCollection;
 
-use App\Models\City;
-use App\Http\Resources\V1\CityResource;
-use App\Http\Resources\V1\CityCollection;
-use App\Http\Requests\V1\StoreCityRequest;
-use App\Http\Requests\V1\UpdateCityRequest;
-
 class CountryController extends Controller
 {
     /**
