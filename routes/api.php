@@ -16,10 +16,28 @@ use App\Http\Controllers\Api\V1\CityController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Get Cities By Country
+Route::get('/countries/{country}/cities', [CityController::class, 'index']);
 
+// Create City By Country
+Route::post('/countries/{country}/cities', [CityController::class, 'store']);
 
+// CRUD For Countries
 Route::apiResource('countries', CountryController::class);
-Route::apiResource('cities', CityController::class);
+
+// Get All Cities
+Route::get('/cities/{city}', [CityController::class, 'show']);
+
+//Update City By ID
+Route::match(['put', 'patch'],'/cities/{city}', [CityController::class, 'update']);
+
+//Delete City By ID
+Route::delete('/cities/{city}', [CityController::class, 'destroy']);
+
+// Default 404 Route
+Route::any('{any}', function(){
+    return response()->json([
+        'status'    => false,
+        'message'   => 'API resource not found',
+    ], 404);
+})->where('any', '.*');
