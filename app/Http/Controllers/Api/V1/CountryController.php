@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Country;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCountryRequest;
-use App\Http\Requests\UpdateCountryRequest;
+use App\Http\Requests\V1\StoreCountryRequest;
+use App\Http\Requests\V1\UpdateCountryRequest;
 use App\Http\Resources\V1\CountryResource;
 use App\Http\Resources\V1\CountryCollection;
+
+use App\Models\City;
+use App\Http\Resources\V1\CityResource;
+use App\Http\Resources\V1\CityCollection;
+use App\Http\Requests\V1\StoreCityRequest;
+use App\Http\Requests\V1\UpdateCityRequest;
 
 class CountryController extends Controller
 {
@@ -22,16 +28,6 @@ class CountryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreCountryRequest  $request
@@ -39,7 +35,7 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request)
     {
-        //
+        return new CountryResource(Country::create($request->all()));
     }
 
     /**
@@ -54,17 +50,6 @@ class CountryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Country  $country
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Country $country)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCountryRequest  $request
@@ -73,7 +58,7 @@ class CountryController extends Controller
      */
     public function update(UpdateCountryRequest $request, Country $country)
     {
-        //
+        return $country->update($request->all());
     }
 
     /**
@@ -84,6 +69,6 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        //
+        return Country::destroy($country->country_code);
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\City;
+use App\Models\Country;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCityRequest;
-use App\Http\Requests\UpdateCityRequest;
+use App\Http\Requests\V1\StoreCityRequest;
+use App\Http\Requests\V1\UpdateCityRequest;
 use App\Http\Resources\V1\CityResource;
 use App\Http\Resources\V1\CityCollection;
 
@@ -16,19 +17,9 @@ class CityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Country $country)
     {
-        return new CityCollection(City::all());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return new CityCollection($country->city);
     }
 
     /**
@@ -37,9 +28,9 @@ class CityController extends Controller
      * @param  \App\Http\Requests\StoreCityRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCityRequest $request)
+    public function store(StoreCityRequest $request, Country $country)
     {
-        //
+        return new CityResource($country->city()->create($request->all()));
     }
 
     /**
@@ -54,17 +45,6 @@ class CityController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\City  $city
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(City $city)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCityRequest  $request
@@ -73,7 +53,7 @@ class CityController extends Controller
      */
     public function update(UpdateCityRequest $request, City $city)
     {
-        //
+        return $city->update($request->all());
     }
 
     /**
@@ -84,6 +64,6 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        return City::destroy($city->id);
     }
 }
