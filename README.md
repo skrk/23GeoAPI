@@ -1,66 +1,170 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# API. Список стран и городов
 
-## About Laravel
+REST API, позволяющее управлять списком стран с их городами.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Задача
+Реализовать REST API на фреймворке Laravel последней версии, позволяющее управлять списком стран с их городами.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Сущность “Страна” должна содержать следующую информацию:
+1. Двухсимвольный код страны; (Также является первичным ключом в БД)
+2. Международный код телефона страны
 
-## Learning Laravel
+Сущность “Город” должна содержать следующую информацию:
+1. ID;
+2. Название;
+3. Код страны
+Связь между сущностями “Страна” и “Город” один-ко-многим.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+API должно отдавать JSON и иметь следующие методы:
+1. Получить список всех стран. У каждой страны в ответе от сервера должно быть также поле с названиями его городов; +
+2. Создание/редактирование страны;
+3. Создание/редактирование городов для страны;
+4. Удаление записей;
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+При создании/редактировании сущности “Страна” на входе обрабатывать следующие поля:
+1. Код страны  (обязательно для заполнения, уникальное значение, проверка на реальное существование страны с таким кодом );
+2. Код телефона (обязательно, число);
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+При создании/редактировании сущности “Город” на входе обрабатывать следующие поля:
+1. Название города (обязательно для заполнения);
 
-## Laravel Sponsors
+Метод получения списка стран содержит следующие данные:
+1. Код страны;
+2. Код телефона;
+3. Список названий городов;
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Возвращать в формате JSON ошибки, возникающие при редактировании/создании/удалении.
 
-### Premium Partners
+Будет плюсом: Написать unit-тесты на каждый API запрос.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Результатом работы должен являться репозиторий (GitHub, BitBucket etc.) с README файлом, в котором описано, 
+что вы сделали, что не сделали, но хотели бы (и почему), затраченное время на реализацию.
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Итоговый проект
+**Laravel** - 9.40.1
 
-## Code of Conduct
+1. Созданы API-роуты (/routes/api.php).
+2. Созданы модели Country и City. Связь один-ко-многим. В качестве первичного ключа у модели Country задано поле 'country_code', изменен тип первичного ключа на 'string' и отключен автоинкремент.
+3. Созданы файлы миграции, фабрики и сидеры для создания и заполнения БД.
+4. Созданы контроллеры CountryController и CityController для обработки запросов.
+5. Созданы классы Request для валидации данных при сохранении и обновлении данных.
+6. Для валидации кодов стран установлена библиотека league/iso3166 и реализован класс валидации кода страны App\Rules\IsCountryCode.
+7. Созданы классы Resource для кастомизации вывода моделей.
+8. Настроен вывод ошибок в формате JSON.
+9. Добавлены Unit-тесты для всех реализованных методов.
+10. Реализована аутентификация по токену.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+На выполнение задания потребовалось 8 ч. 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+## API
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### GET Authentication Token
+
+```http
+  GET /api/setup
+```
+#### GET All Countries
+
+```http
+  GET /api/countries
+```
+
+#### GET Country By ID
+
+```http
+  GET /api/countries/{countryCode}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `countryCode`| `string` | Двухбуквенный код страны |
+
+#### Create Country
+
+```http
+  POST /api/countries
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `countryCode`      | `string` | **Required\|Unique\|IsCountryCode**. Двухбуквенный код страны |
+| `phoneCode`      | `string` | **Required\|Numeric\|min1\|max:9999**. Телефонный код страны |
+
+
+#### Change Country
+
+```http
+  PUT|PATCH /api/countries/{countryCode}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `countryCode`      | `string` | **Unique\|IsCountryCode**. Двухбуквенный код страны |
+| `phoneCode`      | `string` | **Numeric\|min1\|max:9999**. Телефонный код страны |
+
+#### Destroy Country
+
+```http
+  DELETE /api/countries/{countryCode}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `countryCode`      | `string` | Двухбуквенный код страны |
+
+#### GET All Cities By Country
+
+```http
+  GET /api/countries/{countryCode}/cities
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `countryCode`      | `string` | Двухбуквенный код страны |
+
+#### GET City By ID
+
+```http
+  GET /api/cities/{id}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`| `string` | ID города |
+
+#### Create City By Country
+
+```http
+  POST /api/countries/{countryCode}/cities
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `countryCode`      | `string` | Двухбуквенный код страны |
+| `name`      | `string` | **Required**. Название города   |
+
+
+#### Change City
+
+```http
+  PUT|PATCH /api/cities/{id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`| `string` | ID города |
+| `name`      | `string` | **Required**. Название города   |
+
+
+#### Destroy City
+
+```http
+  DELETE /api/cities/{id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`| `string` | ID города |
