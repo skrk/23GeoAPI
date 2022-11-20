@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    /**
+     * Create ne user and generate token
+     *
+     * @return array
+     */
     public function getToken(){
         $credentials = [
             'email' => 'admin@test.com',
