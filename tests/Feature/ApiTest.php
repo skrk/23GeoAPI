@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 
 class ApiTest extends TestCase
 {
@@ -16,7 +17,8 @@ class ApiTest extends TestCase
      */
     public function test_get_all_countries()
     {
-        $response = $this->getJson('/api/countries');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->getJson('/api/countries');
 
         $response->assertStatus(200);
     }
@@ -28,7 +30,8 @@ class ApiTest extends TestCase
      */
     public function test_create_country()
     {
-        $response = $this->postJson('/api/countries', ['countryCode' => 'BY', 'phoneCode' => '375']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->postJson('/api/countries', ['countryCode' => 'BY', 'phoneCode' => '375']);
 
         $response
             ->assertStatus(201)
@@ -48,7 +51,8 @@ class ApiTest extends TestCase
      */
     public function test_create_duplicate_country()
     {
-        $response = $this->postJson('/api/countries', ['countryCode' => 'BY', 'phoneCode' => '375']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->postJson('/api/countries', ['countryCode' => 'BY', 'phoneCode' => '375']);
 
         $response
             ->assertStatus(422)
@@ -62,7 +66,8 @@ class ApiTest extends TestCase
      */
     public function test_create_country_with_invalid_country_code()
     {
-        $response = $this->postJson('/api/countries', ['countryCode' => 'ZZ', 'phoneCode' => '375']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->postJson('/api/countries', ['countryCode' => 'ZZ', 'phoneCode' => '375']);
 
         $response
             ->assertStatus(422)
@@ -76,7 +81,8 @@ class ApiTest extends TestCase
      */
     public function test_get_country_by_id()
     {
-        $response = $this->getJson('/api/countries/BY');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->getJson('/api/countries/BY');
 
         $response->assertStatus(200);
     }
@@ -88,7 +94,8 @@ class ApiTest extends TestCase
      */
     public function test_get_nonexistent_country()
     {
-        $response = $this->getJson('/api/countries/ZZ');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->getJson('/api/countries/ZZ');
 
         $response
             ->assertStatus(404)
@@ -102,7 +109,8 @@ class ApiTest extends TestCase
      */
     public function test_change_country()
     {
-        $response = $this->patchJson('/api/countries/BY', ['phoneCode' => '376']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->patchJson('/api/countries/BY', ['phoneCode' => '376']);
 
         $response->assertStatus(200);
     }
@@ -114,7 +122,8 @@ class ApiTest extends TestCase
      */
     public function test_change_country_witn_invalid_phone_code()
     {
-        $response = $this->patchJson('/api/countries/BY', ['phoneCode' => 'zzz']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->patchJson('/api/countries/BY', ['phoneCode' => 'zzz']);
 
         $response
             ->assertStatus(422)
@@ -128,7 +137,8 @@ class ApiTest extends TestCase
      */
     public function test_create_city_by_country()
     {
-        $response = $this->postJson('/api/countries/BY/cities', ['id' => '1', 'name' => 'Minsk']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->postJson('/api/countries/BY/cities', ['id' => '1', 'name' => 'Minsk']);
                 
         $response
             ->assertStatus(201)
@@ -146,7 +156,8 @@ class ApiTest extends TestCase
      */
     public function test_create_city_by_country_without_name()
     {
-        $response = $this->postJson('/api/countries/BY/cities', []);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->postJson('/api/countries/BY/cities', []);
                 
         $response
             ->assertStatus(422)
@@ -160,7 +171,8 @@ class ApiTest extends TestCase
      */
     public function test_get_city_by_id()
     {
-        $response = $this->getJson('/api/cities/1');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->getJson('/api/cities/1');
 
         $response->assertStatus(200);
     }
@@ -172,7 +184,8 @@ class ApiTest extends TestCase
      */
     public function test_change_city()
     {
-        $response = $this->patchJson('/api/cities/1', ['name' => 'Brest']);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->patchJson('/api/cities/1', ['name' => 'Brest']);
 
         $response->assertStatus(200);
     }
@@ -184,7 +197,8 @@ class ApiTest extends TestCase
      */
     public function test_delete_city()
     {
-        $response = $this->deleteJson('/api/cities/1');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->deleteJson('/api/cities/1');
 
         $response->assertStatus(200);
     }
@@ -197,7 +211,8 @@ class ApiTest extends TestCase
      */
     public function test_delete_country()
     {
-        $response = $this->deleteJson('/api/countries/BY');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->deleteJson('/api/countries/BY');
 
         $response->assertStatus(200);
     }
